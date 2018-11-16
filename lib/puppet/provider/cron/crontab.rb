@@ -281,6 +281,8 @@ Puppet::Type.type(:cron).provide(:crontab, parent: Puppet::Provider::ParsedFile,
     Puppet.debug "looking for crontabs in #{CRONTAB_DIR}"
     return unless File.readable?(CRONTAB_DIR)
     Dir.foreach(CRONTAB_DIR) do |file|
+      next if file.start_with?('.')
+
       path = "#{CRONTAB_DIR}/#{file}"
       yield(file) if File.file?(path) && File.writable?(path)
     end
